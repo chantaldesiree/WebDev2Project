@@ -1,0 +1,170 @@
+body {
+    font-family: sans-serif;
+    background-color: black;
+    overflow-x: hidden;
+}
+
+.footer {
+    background-color: aqua;
+    color: black;
+    padding: 10px 30px;
+    text-align: center;
+}
+
+#logo {
+    height: 24px;
+    width: auto;
+}
+
+form {
+    padding-bottom: 10px;
+}
+
+h3 {
+    padding: 5px 30px;
+}
+
+.form-element {
+    padding: 10px 30px;
+}
+
+h6 {
+    font-weight: bold;
+}
+
+#container-fluid {
+    padding: 0;
+    min-height: 800px;
+}
+
+.navigation {
+    background-color: #2e2e2e;
+    width: 100%;
+    color: white;
+    padding: 10px;
+}
+
+.right-nav ul {
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.left-nav a, .right-nav a {
+    color: white;
+    text-decoration-style: none;
+    padding-left: 5px;
+}
+
+.left-nav img {
+    float: left;
+}
+
+.navigation .right-nav ul li {
+    list-style-type: none;
+    float: left;
+    padding-left: 15px;
+}
+
+.fa-user-circle {
+    color: white;
+    border: white;
+    height: 20px;
+}
+
+.main-content {
+    color: white;
+    padding: 0px 15px;
+    min-height: 800px;
+}
+
+.main-content h1 {
+    padding: 30px 0px 10px 30px;
+}
+
+h2 {
+    padding: 0px 30px;
+}
+
+.main-content h1 {
+    font-weight: bold;
+    font-size: 72px;
+}
+
+.main-content form {
+    padding: 30px;
+}
+
+.left-column {
+    background-color: #0a0a0a;
+    height: 1920px;
+    padding-top: 20px;
+}
+
+.center-column {
+    padding-top: 20px;
+}
+
+.right-column {
+    background-color: #0c0c0c;
+    padding-top: 20px;
+}
+
+.left-column ul{
+    padding: 0;
+}
+
+.right-column ul {
+    padding: 0;
+}
+
+.main-content .left-column ul li:nth-child(odd) {
+    list-style-type: none;
+    color: blueviolet;
+}
+
+.main-content .left-column ul li:nth-child(even) {
+    list-style-type: none;
+    color: greenyellow;
+}
+
+.main-content .right-column ul li:nth-child(odd) {
+    list-style-type: none;
+    color: rgb(255, 251, 0);
+}
+
+.main-content .right-column ul li:nth-child(even) {
+    list-style-type: none;
+    color: rgb(250, 4, 156);
+}
+
+.blog {
+}
+
+.blog .row:nth-child(odd) {
+    color: rgb(0, 247, 255);
+}
+
+.blog .row:nth-child(even) {
+    color: rgb(255, 72, 0);
+}
+
+.blog .row:nth-child(3n) {
+    color: rgb(0, 255, 0);   
+}
+
+.your-blog-heading {
+    text-align: center;
+}
+.your-blog-heading-text {
+    text-align: center;
+    font-weight: bold;
+    font-size: 72px;
+    padding: 50px 100px;
+}
+
+.your-blog {
+    padding: 0px 100px;
+    color: rgb(0, 247, 255);
+}
