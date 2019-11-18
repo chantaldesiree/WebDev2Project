@@ -32,6 +32,7 @@
                     <div class="right-nav col-sm-8">
                         <ul>
                         <?php if(isset($_SESSION['user']['user_email'])): ?>
+                            <li><a href="welcome.php"><?= $_SESSION['user']['user_displayName'] ?></a></li>
                             <li><i class="fas fa-user-circle"></i><a href="welcome.php">Account</a></li>
                             <li><i class="fas fa-sign-out-alt"></i><a href="signout.php">Logout</a></li>
                         <?php else: ?>

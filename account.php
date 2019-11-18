@@ -15,16 +15,15 @@
     * Purpose: Requires the user to log-in to reach the page.
     */
 
-        $query = "SELECT * FROM post WHERE post_id = :post_id LIMIT 1";
+        $query = "SELECT * FROM useraccountinformation WHERE user_id = ".$_SESSION['user']['user_id']." LIMIT 1";
         $statement = $db->prepare($query);
 
-        $post_id = filter_input(INPUT_GET, 'post_id', FILTER_SANITIZE_NUMBER_INT);
+        $user_id = filter_input(INPUT_POST, 'user_id', FILTER_SANITIZE_NUMBER_INT);
 
-        $statement->bindValue('post_id', $post_id, PDO::PARAM_INT);
+        $statement->bindValue('user_id', $user_id, PDO::PARAM_INT);
         $statement->execute();
 
         $post = $statement->fetch();
-
 
 ?>
 
@@ -33,14 +32,10 @@
     <div class="main-content">
         <div class="content">
 
-            <form method="post" action="update.php">
+            <form method="post" action="updateaccountinfo.php">
                 
-                <input type="hidden" name="post_id" value ="<?= $post_id ?>">
-                <input type="hidden" name="post_date">
-
-
                 <div class="row">
-                    <label for="post_title"><h3>Title: </h3></label>
+                    <label for="post_title"><h3>First Name: </h3></label>
                 </div>
                 <div class="row form-element">
                     <input type="text" id="post_title" name="post_title" value="<?= $post['post_title'] ?>">
