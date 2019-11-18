@@ -1,9 +1,5 @@
 <?php
-    session_start();
 
-    /*
-    * Purpose: Lets the webpage connect to the database.
-    */
     require('db_connect.php');
 
 
@@ -15,4 +11,5 @@
     $statement->bindValue('post_id', $post_id, PDO::PARAM_INT);
     $statement->execute();
     
+    header("Location: index.php");
 ?>
