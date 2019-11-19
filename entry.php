@@ -60,7 +60,11 @@ session_start();
             $comments = $stmt->fetchAll();
         ?>
 
-        <h6>.................... Comments .................</h6>
+        <h6>.................. Comments .................</h6>
+        <?php if($comments == null): ?>
+        <h6>........................................................</h6>
+        <?php endif; ?>
+
         <?php foreach ($comments as $comment): ?>
 
         <?php
@@ -73,6 +77,11 @@ session_start();
             <h6><?= $commentdisplayname['user_displayName'] ?></h6>
             <h6><?= $comment['comment_date'] ?></h6>
             <h6><?= $comment['comment_content'] ?></h6>
+
+            <?php if(isset($_SESSION['user']) && ($_SESSION['user']['user_id'] == $comment['comment_author']) || $_SESSION['user']['user_admin'] == 1): ?>
+            <h6><a href="deletecomment.php?comment_id=<?= $comment['comment_id']?>">delete</a></h6>
+            <?php endif; ?>
+
             <h6>..........................................................</h6>
         <?php endforeach; ?>
 
@@ -102,6 +111,13 @@ session_start();
             <input type="hidden" id="comment_author" name="comment_author" value="<?= $_SESSION['user']['user_id'] ?>">
             <input type="hidden" id="comment_postId" name="comment_postId">
             <input type="hidden" id="comment_date" name="comment_date">
+
+            <div class="elem-group">
+                <label for="captcha">Please Enter the Captcha Text</label>
+                <img src="captcha.php" alt="CAPTCHA" class="captcha-image"><i class="fas fa-redo refresh-captcha"></i>
+                <br>
+                <input type="text" id="captcha" name="captcha_challenge" pattern="[A-Z]{6}">
+            </div>
             
             <div class="row form-element">
                 <input type="submit" value="Comment">

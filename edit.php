@@ -1,4 +1,6 @@
 <?php 
+
+session_start();
 /*
  * Chantal Wiebe
  * September 29, 2019
@@ -24,6 +26,11 @@
         $statement->execute();
 
         $post = $statement->fetch();
+
+    if($_SESSION['user'] == null)
+    {
+        header("Location: index.php");
+    }
 
 
 ?>

@@ -7,9 +7,14 @@
 
     $query = "SELECT * FROM post ORDER BY post_date";
 
-    if(isset($_GET['sortby']))
+    if(isset($_GET['sortby']) && isset($user_id))
     {
         $sort = $_GET["sortby"];
+        
+        if($sort == "title")
+        {
+            $query = "SELECT * FROM post ORDER BY post_title DESC";
+        }
         if($sort == "author")
         {
             $query = "SELECT * FROM post INNER JOIN useraccountinformation ON post.post_author = useraccountinformation.user_id ORDER BY useraccountinformation.user_displayName DESC";
@@ -62,18 +67,20 @@
         <h2>This site is currently a work in progress. Come back soon to see what new features we have added next!</h2>
         <h1></h1>
 
-        <p>Sort posts by:</p>
-        <form action="index.php" method="get">
-        <input type="submit" name="sortby" value="newest to oldest" />
-        <input type="submit" name="sortby" value="oldest to newest" />
-        <input type="submit" name="sortby" value="author" />
-        <input type="submit" name="sortby" value="comments" />
-        </form>
+        <?php if(isset($user_id)): ?>
+            <form action="index.php" method="get">
+            <input type="submit" name="sortby" value="title" />
+            <input type="submit" name="sortby" value="newest to oldest" />
+            <input type="submit" name="sortby" value="oldest to newest" />
+            <input type="submit" name="sortby" value="author" />
+            <input type="submit" name="sortby" value="comments" />
+            </form>
+        <?php endif; ?>
 
         <?php while($x < count($blog)): ?>   
             <div class="post">
             <?php if ($x <= 20): ?>
-                <h2><a href="post.php?post_id=<?= $blog[$x]['post_id'] ?>"><?= $blog[$x]['post_title'] ?></a> posted by 
+                <h2><a href="entry.php?post_id=<?= $blog[$x]['post_id'] ?>"><?= $blog[$x]['post_title'] ?></a> posted by 
                 
                 <?php
                 $userquery = "SELECT * FROM useraccountinformation WHERE user_id = ".$blog[$x]['post_author'];
@@ -85,8 +92,11 @@
                 <?= $userdisplayName['user_displayName'] ?></h2>
                 <div class="form-element">
                     <h6>Posted on <?= date('M d Y, h:ia', strtotime($blog[$x]['post_date'])) ?>
-                    <?php if($_SESSION['user'] != null && $_SESSION['user']['user_id'] == $blog[$x]['post_author']): ?>
-                        - <a href="edit.php?post_id=<?= $blog[$x]['post_id']?>">edit</a></h6>
+
+
+                    <?php if(isset($_SESSION['user']) && ($_SESSION['user']['user_id'] == $blog[$x]['post_author']) || $_SESSION['user']['user_admin'] == 1): ?>
+                        - <a href="edit.php?post_id=<?= $blog[$x]['post_id']?>">edit</a> | <a href="delete.php?post_id=<?= $blog[$x]['post_id']?>">delete</a></h6>
+
                     <?php endif; ?>
                         </h6><p><?= $blog[$x]['post_content'] ?></p>
 
