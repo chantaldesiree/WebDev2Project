@@ -1,4 +1,5 @@
 <?php
+
     session_start();
 
     require('db_connect.php');
@@ -7,44 +8,27 @@
     {
         $user_id = $_SESSION['user']['user_id'];
     }
-    
-    $query = "SELECT * FROM post ORDER BY post_date";
 
-    if(isset($_GET['sortby']) && isset($user_id))
-    {
-        $sort = $_GET["sortby"];
-        
-        if($sort == "title")
+    if(isset($_GET['search']) && isset($user_id))
         {
-            $query = "SELECT * FROM post ORDER BY post_title DESC";
-        }
-        if($sort == "author")
-        {
-            $query = "SELECT * FROM post INNER JOIN useraccountinformation ON post.post_author = useraccountinformation.user_id ORDER BY useraccountinformation.user_displayName DESC";
-        }
-        if($sort == "comments")
-        {
-            $query = "SELECT * FROM post ORDER BY post_commentCount";
-        }
+            $search = $_GET["search"];
 
-        if($sort == "newest to oldest")
-        {
-            $query = "SELECT * FROM post ORDER BY post_date ASC";
-        }
+            if($_GET['post_category'] == "all")
+            {
+                $query = "SELECT * FROM post WHERE (`post_title` LIKE '%".$search."%') OR (`post_content` LIKE '%".$search."%')";
+            }
+            else 
+            {
+                $query = "SELECT * FROM post WHERE ((`post_title` LIKE '%".$search."%') OR (`post_content` LIKE '%".$search."%')) AND post_category = '".$_GET['post_category']."'";
+            }
 
-        if($sort == "oldest to newest")
-        {
-            $query = "SELECT * FROM post ORDER BY post_date DESC";
         }
-
-    }
 
     $statement = $db->prepare($query); // Returns a PDOStatement object.
     $statement->execute(); // The query is now executed.
     $fullblog = $statement->fetchAll();
     $blog = array_reverse($fullblog);
 
-    
     $x = 0;
 
     if ($fullblog != null)
@@ -53,19 +37,6 @@
         $content = strip_tags($post_content, "<p>");
     }
 
-
-
-    /*
-    * Purpose: Trims the blog posts to less than 200 characters.
-    
-    function cutPost($blog, $x)
-    {
-        $cutDesc = substr($blog[$x]['post_content'], 0, 200);
-        $endOfContent = strrpos($cutDesc, ' ');
-        $content = $endOfContent? substr($cutDesc, 0, $endOfContent) : substr($cutDesc, 0);
-        return $content;
-    }
-    */
 ?>
 
 <?php include('nav.php') ?>
@@ -74,26 +45,6 @@
         <h1>Welcome to boondoggle!</h1>
         <h2>This site is currently a work in progress. Come back soon to see what new features we have added next!</h2>
         <h1></h1>
-
-        <?php if(isset($user_id)): ?>
-        <h6>Select posts by category:</h6>
-            <form action="category.php" method="get">
-                <?php foreach($postcategorylist as $category): ?>
-                    <input type="submit" name="post_category" value=<?= $category['post_category'] ?> />
-                <?php endforeach; ?>
-            </form>
-        <?php endif; ?>
-
-        <?php if(isset($user_id)): ?>
-        <h6>Sort posts:</h6>
-            <form action="index.php" method="get">
-            <input type="submit" name="sortby" value="title" />
-            <input type="submit" name="sortby" value="newest to oldest" />
-            <input type="submit" name="sortby" value="oldest to newest" />
-            <input type="submit" name="sortby" value="author" />
-            <input type="submit" name="sortby" value="comments" />
-            </form>
-        <?php endif; ?>
 
         <?php while($x < count($blog)): ?>   
             <div class="post">

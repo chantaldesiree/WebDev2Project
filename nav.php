@@ -1,11 +1,12 @@
 <?php
-    session_start();
+    $postcategoryquery = "SELECT DISTINCT post_category FROM post ORDER BY post_category";
 
-
-
-
+    $postcategorystatement = $db->prepare($postcategoryquery); // Returns a PDOStatement object.
+    $postcategorystatement->execute(); // The query is now executed.
+    $postcategorylist = $postcategorystatement->fetchAll();
 
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -16,6 +17,9 @@
     <link rel="stylesheet" type="text/css" href="styles.css">
     <title>boondoggle</title>
     <script src="https://kit.fontawesome.com/4263976262.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://www.strictly-software.com/scripts/downloads/encoder.js"></script>
+
 </head>
 <body>
     <div id="container-fluid" class="container-fluid">
@@ -32,10 +36,28 @@
                     <div class="right-nav col-sm-8">
                         <ul>
                         <?php if(isset($_SESSION['user']['user_email'])): ?>
+                            <li>
+                                <form action="search.php" method="get">
+                                    <input type="text" name="search">
+                                    <select name="post_category">
+                                            <option value="all">All Categories</option>
+                                            <?php foreach($postcategorylist as $category): ?>
+                                                <option><?= $category['post_category'] ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    <input type="submit">
+                                </form>
+                            </li>   
                             <li><a href="welcome.php"><?= $_SESSION['user']['user_displayName'] ?></a></li>
-                            <li><i class="fas fa-user-circle"></i><a href="welcome.php">Account</a></li>
+                            <li><i class="fas fa-user-circle"></i><a href="account.php">Account</a></li>
                             <li><i class="fas fa-sign-out-alt"></i><a href="signout.php">Logout</a></li>
                         <?php else: ?>
+                            <li>
+                                <form action="search.php" method="get">
+                                    <input type="text" name="search">
+                                    <input type="submit">
+                                </form>
+                            </li> 
                             <li><i class="fas fa-user-plus"></i><a href="register.php">Sign up</a></li>
                             <li><i class="fas fa-user-circle"></i><a href="signin.php">Login</a></li>
                         <?php endif; ?>
