@@ -48,7 +48,8 @@ session_start();
         <?php if($_SESSION['user'] != null && $_SESSION['user']['user_id'] == $post['post_author']): ?>
             - <a href="edit.php?post_id=<?= $post['post_id']?>">edit</a></h6>
         <?php endif; ?>
-        <p><?= $post['post_content'] ?></p>
+        <p>Category: <?= $post['post_category'] ?></p>
+        <p><?= html_entity_decode($post['post_content']); ?></p>
 
         <?php
             $commentquery = "SELECT * FROM comment
